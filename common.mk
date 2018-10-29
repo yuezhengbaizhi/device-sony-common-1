@@ -13,6 +13,7 @@
 # limitations under the License.
 
 $(call inherit-product-if-exists, device/sony/customization/customization.mk)
+$(call inherit-product, vendor/ix5/ix5.mk)
 
 # Vendor version
 TARGET_VENDOR_VERSION := v4
