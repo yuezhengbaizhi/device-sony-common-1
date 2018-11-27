@@ -27,6 +27,8 @@ TARGET_NO_BOOTLOADER := true
 TARGET_NO_RECOVERY ?= false
 TARGET_NO_KERNEL := false
 
+BOARD_USE_ENFORCING_SELINUX := true
+
 # common cmdline parameters
 ifneq ($(BOARD_USE_ENFORCING_SELINUX),true)
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
