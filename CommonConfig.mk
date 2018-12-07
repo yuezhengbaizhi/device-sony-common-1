@@ -27,6 +27,9 @@ TARGET_NO_BOOTLOADER := true
 TARGET_NO_RECOVERY ?= false
 TARGET_NO_KERNEL := false
 
+# Needed for marijn's TEMP per_mgr "fixes"
+PRODUCT_FULL_TREBLE_OVERRIDE := false
+
 BOARD_USE_ENFORCING_SELINUX := true
 
 # common cmdline parameters
