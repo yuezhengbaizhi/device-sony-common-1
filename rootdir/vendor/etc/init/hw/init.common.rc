@@ -85,12 +85,14 @@ on fs
 
     mount_all /vendor/etc/fstab.${ro.hardware}
 
-    # /dsp is initially unlabelled so we need to mount
-    # it as rw, restore AOSP labels, then remount
-    restorecon_recursive /dsp
-    mount rootfs rootfs /dsp ro remount
+    # init will mount dsp partition via fstab with correct contexts already.
+    # Only the in-memory context will be changed, the on-disk context will
+    # remain the same
+    #restorecon_recursive /vendor/dsp/
+    #mount rootfs rootfs /vendor/dsp ro remount
 
     restorecon_recursive /persist
+    restorecon_recursive /mnt/vendor/persist
 
 on post-fs
     # Wait qseecomd started
