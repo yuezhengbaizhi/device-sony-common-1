@@ -26,8 +26,12 @@ LIBRARY_NAMES := \
 # Create symlinks to 32- and 64-bit directories:
 SONY_SYMLINKS := $(foreach lib_dir,lib lib64,\
     $(foreach p,$(LIBRARY_NAMES),\
-        /odm/$(lib_dir)/$p:$(TARGET_COPY_OUT_VENDOR)/$(lib_dir)/$p \
+        /vendor/odm/$(lib_dir)/$p:$(TARGET_COPY_OUT_VENDOR)/$(lib_dir)/$p \
     ) \
 )
+
+SONY_SYMLINKS += \
+    /vendor/odm/build.prop:$(TARGET_ROOT_OUT)/odm/build.prop \
+    /vendor/odm/radio:$(TARGET_ROOT_OUT)/odm/radio
 
 include $(SONY_BUILD_SYMLINKS)
