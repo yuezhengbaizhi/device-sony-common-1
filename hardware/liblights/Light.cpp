@@ -66,6 +66,8 @@ namespace android {
                         mDevice->g_lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
                         mDevice->g_lcd_lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
 
+                        /* "/sys/class/leds/lcd-backlight/max_brightness"; */
+                        /* Most likely going to be 255 */
                         lcd_max = readInt(LCD_MAX_FILE);
 
                         if (lcd_max == 4095)
@@ -80,19 +82,19 @@ namespace android {
                     Return<Status> Light::setLight(Type type, const LightState &state) {
                         switch (type) {
                             case Type::BACKLIGHT:
-                                LOG(DEBUG) << __func__ << " : Type::BACKLIGHT";
+                                LOG(INFO) << __func__ << " : Type::BACKLIGHT";
                                 setLightBacklight(state);
                                 break;
                             case Type::BATTERY:
-                                LOG(DEBUG) << __func__ << " : Type::BATTERY";
+                                LOG(INFO) << __func__ << " : Type::BATTERY";
                                 setLightBattery(state);
                                 break;
                             case Type::NOTIFICATIONS:
-                                LOG(DEBUG) << __func__ << " : Type::NOTIFICATIONS";
+                                LOG(INFO) << __func__ << " : Type::NOTIFICATIONS";
                                 setLightNotifications(state);
                                 break;
                             default:
-                                LOG(DEBUG) << __func__ << " : Unknown light type";
+                                LOG(INFO) << __func__ << " : Unknown light type";
                                 return Status::LIGHT_NOT_SUPPORTED;
                         }
                         return Status::SUCCESS;
@@ -174,14 +176,21 @@ namespace android {
                     }
 
                     int Light::rgbToBrightness(const LightState &state) {
+                        /* LUX to brightness conversion happens here? */
                         int color = state.color & 0x00ffffff;
                         return ((77 * ((color >> 16) & 0x00ff))
                                 + (150 * ((color >> 8) & 0x00ff)) + (29 * (color & 0x00ff))) >> 8;
                     }
 
+                    /* called from frameworks/base/services/core/jni/com_android_server_lights_LightsService.cpp */
+                    /* via setLight_native() */
                     int Light::setLightBacklight(const LightState &state) {
                         int err = 0;
                         int brightness = rgbToBrightness(state);
+                        /* brightnessMode: USER, SENSOR, LOW_PERSISTENCE */
+                        int debug_br = static_cast<int>(state.brightnessMode);
+                        LOG(INFO) << __func__ << " : state: colorARGB=" << std::hex << state.color << " brightnessMode=" << debug_br;
+/* LOW_PERSISTENCE_DISPLAY is not used on Sony phones */
 #ifdef LOW_PERSISTENCE_DISPLAY
                         unsigned int lpEnabled = state.brightnessMode == Brightness::LOW_PERSISTENCE;
 #endif
@@ -192,6 +201,7 @@ namespace android {
 
                         pthread_mutex_lock(&mDevice->g_lcd_lock);
 
+/* LOW_PERSISTENCE_DISPLAY is not used on Sony phones */
 #ifdef LOW_PERSISTENCE_DISPLAY
                         int currState = static_cast<int>(state.brightnessMode);
                         // If we're not in lp mode and it has been enabled or if we are in lp mode
@@ -213,12 +223,14 @@ namespace android {
 
                         if (!err) {
                             if (mDevice->backlight_bits > 8) {
+                                LOG(INFO) << __func__ << " : backlight_bits=" << mDevice->backlight_bits;
                                 int sbits = mDevice->backlight_bits - 8;
                                 brightness = (brightness << sbits) | (brightness >> sbits);
                             }
 #ifdef UCOMMSVR_BACKLIGHT
                             err = ucommsvr_set_backlight(brightness);
 #else
+                            LOG(INFO) << __func__ << " : writeInt brightness=" << brightness;
                             err = writeInt(LCD_FILE, brightness);
 #endif
                         }
