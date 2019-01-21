@@ -52,3 +52,6 @@ $(call inherit-product, vendor/omni/config/common.mk)
 
 # Widevine DRM
 $(call inherit-product-if-exists, vendor/sony/widevine/widevine.mk)
+
+# ix5 additions
+$(call inherit-product-if-exists, vendor/ix5/ix5.mk)
