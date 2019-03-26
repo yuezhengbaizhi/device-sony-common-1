@@ -93,7 +93,6 @@ PRODUCT_PACKAGES += \
 
 # Depend on symlink creation in /vendor:
 PRODUCT_PACKAGES += \
-    adreno_symlinks \
     camera_symlinks \
     qca_cld3_symlinks \
     tftp_symlinks
@@ -107,9 +106,17 @@ PRODUCT_COPY_FILES += \
     device/sample/etc/old-apns-conf.xml:system/etc/old-apns-conf.xml \
     device/sample/etc/apns-full-conf.xml:system/etc/apns-conf.xml
 
+PRODUCT_FULL_TREBLE_OVERRIDE := true
+
+# Use device/sony/odm/ to package odm blobs
+PRODUCT_PREBUILT_ODM := true
+# Include extra sepolicy for treble builds
+PRODUCT_FAKE_TREBLE_BUILD := true
+
 $(call inherit-product, device/sony/common/common-init.mk)
 $(call inherit-product, device/sony/common/common-odm.mk)
 $(call inherit-product, device/sony/common/common-packages.mk)
 $(call inherit-product, device/sony/common/common-perm.mk)
 $(call inherit-product, device/sony/common/common-prop.mk)
 $(call inherit-product, device/sony/common/common-treble.mk)
+$(call inherit-product, device/sony/odm/odm.mk)
