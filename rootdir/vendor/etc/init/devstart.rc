@@ -4,3 +4,6 @@ service devstart_sh /vendor/bin/init.qcom.devstart.sh
     group root system
     disabled
     oneshot
+
+on property:vendor.qcom.adspup=1
+    start devstart_sh
