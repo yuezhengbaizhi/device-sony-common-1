@@ -127,6 +127,11 @@ endif
 PRODUCT_PACKAGES += \
     android.hardware.thermal@1.0-impl \
     android.hardware.thermal@1.0-service
+    
+# Power
+PRODUCT_PACKAGES += \
+    android.hardware.power@1.0-impl \
+    android.hardware.power@1.0-service
 
 ifeq ($(AB_OTA_UPDATER),true)
 # Boot control
