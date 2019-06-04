@@ -101,7 +101,9 @@ PRODUCT_COPY_FILES += \
     device/sample/etc/apns-full-conf.xml:system/etc/apns-conf.xml
 
 $(call inherit-product, device/sony/common/common-init.mk)
-$(call inherit-product, device/sony/common/common-odm.mk)
+ifneq (,$(SONY_BUILD_ODM))
+    $(call inherit-product, device/sony/common/common-odm.mk)
+endif
 $(call inherit-product, device/sony/common/common-packages.mk)
 $(call inherit-product, device/sony/common/common-perm.mk)
 $(call inherit-product, device/sony/common/common-prop.mk)
