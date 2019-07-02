@@ -3,13 +3,13 @@ on post-fs-data
     mkdir /data/vendor/sensors 0775 system system
 
     # Fix sensors permissions
-    chown system system /mnt/vendor/persist/sensors
-
-    # Fix labels when coming from stock
-    # Note: The restorecon in hw/init.common.rc may skip the persist folder
-    # since it only checks whether the sepolicy file_contexts file has changed
-    # and not the actual folder contents.
-    restorecon_recursive /mnt/vendor/persist/sensors/
+    chown system system /mnt/vendor/persist/sensors/
+    chown system system /mnt/vendor/persist/sensors/error_log
+    chown system system /mnt/vendor/persist/sensors/registry/
+    chown system system /mnt/vendor/persist/sensors/registry/registry/
+    chown system system /mnt/vendor/persist/sensors/sensors_settings
+    chown system system /mnt/vendor/persist/sensors/sns.reg
+    chown system system /mnt/vendor/persist/sensors/version.txt
 
     # /dev/sensors only supports an ioctl to get the current SLPI timestamp;
     # allow the sensors daemon to perform this as non-root
@@ -23,6 +23,6 @@ service vendor.sensors /odm/bin/sensors.qcom
     group system
     disabled
 
-# Enable the service after adsp is up
-on property:vendor.qcom.adspup=1
+# Enable the service after ADSP and SLPI are up
+on property:vendor.qcom.slpiup=1
     enable vendor.sensors
