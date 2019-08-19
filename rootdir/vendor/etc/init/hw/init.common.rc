@@ -342,6 +342,9 @@ on property:sys.boot_completed=1
     swapon_all /vendor/etc/fstab.${ro.hardware}
     write /proc/sys/vm/swappiness 25
 
+    # Enable PowerHAL hint processing
+    setprop vendor.powerhal.init 1
+
 on property:vendor.sys.listeners.registered=true
     # load IPA FWs
     start ipastart_sh
