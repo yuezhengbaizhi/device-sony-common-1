@@ -19,4 +19,7 @@
 <resources>
     <bool name="def_screen_brightness_automatic_mode">true</bool>
     <string name="def_backup_transport">com.google.android.gms/.backup.BackupTransportService</string>
+    <!-- 0 == default, 1 == never while plugged, 2 == never -->
+    <integer name="def_wifi_sleep_policy">2</integer>
 </resources>
+
