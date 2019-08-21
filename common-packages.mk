@@ -96,6 +96,10 @@ PRODUCT_PACKAGES += \
     timekeep \
     TimeKeep \
 
+# OSS Power HAL
+PRODUCT_PACKAGES += \
+    librqbalance
+
 # OSS WIFI and BT MAC tool
 PRODUCT_PACKAGES += \
     macaddrsetup

@@ -50,6 +50,7 @@ BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 TARGET_USES_MKE2FS := true
 TARGET_USERIMAGES_USE_EXT4 := true
 
+
 # Use mke2fs to create f2fs images
 TARGET_USERIMAGES_USE_F2FS := true
 
