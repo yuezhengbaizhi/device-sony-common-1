@@ -17,7 +17,7 @@
 # Common path
 COMMON_PATH := device/sony/common
 
-TARGET_KERNEL_SOURCE := kernel/sony/msm-4.9/kernel
+TARGET_KERNEL_SOURCE := kernel/sony/msm-4.14/kernel
 
 # Do not build proprietary capability
 TARGET_USES_AOSP := true
